@@ -71,7 +71,7 @@ canvas {
     image-rendering: pixelated;
 }
 
-.store, .timer, {
+.store, .timer{
     font-size: 12px;
     text-align: center;
 }
