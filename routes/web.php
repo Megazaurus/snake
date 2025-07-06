@@ -8,7 +8,7 @@ Route::get('/get-level', [GameController::class, 'getLevel']);
 
 Route::get('/play', function () {
     return view('play');
-})->middleware(['auth']);
+})->middleware(['auth'])->name('play');
 
 Route::get('/', function () {
     return view('welcome');

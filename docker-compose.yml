@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: dockerfiles/nginx.dockerfile
+
+        ports:
+            - "80:80"
+        volumes:
+            - ./:/var/www/html:delegated
+        depends_on:
+            - backend
+        networks:
+            - snake
+
+    database:
+        image: postgres:16
+        restart: unless-stopped
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: root
+            POSTGRES_DB: snake
+        volumes:
+            - ./.docker/database:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+        networks:
+            - snake
+
+    backend:
+        build:
+            context: .
+            dockerfile: dockerfiles/php.dockerfile
+
+        expose:
+            - "9000"
+        depends_on:
+            - redis
+            - database
+        volumes:
+            - ./:/var/www/html:delegated
+            - ./dockerfiles/php/php.ini:/usr/local/etc/php/php.ini
+        networks:
+            - snake
+
+    redis:
+        image: redis:alpine
+        restart: unless-stopped
+        expose:
+            - "6379"
+        networks:
+            - snake
+
+networks:
+    snake:
+        driver: bridge
