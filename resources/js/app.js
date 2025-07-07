@@ -1,6 +1,10 @@
 import './bootstrap';
 import Alpine from 'alpinejs';
-import './game/index.js';
+import { startGame } from './game/startGame';
 
 window.Alpine = Alpine;
 Alpine.start();
+
+document.addEventListener("DOMContentLoaded", () => {
+    startGame();
+});

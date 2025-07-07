@@ -17,7 +17,7 @@
 
         <div class="panel store">
             <div>💰 STORE</div>
-            <div id="score">0</div>
+            <div id="apples">0</div>
         </div>
 
         <div class="button editor-btn"><a class="button editor-btn" href="level-editor">🎮 Редактор уровней</a></div>
@@ -25,7 +25,7 @@
 
     <!-- Центральная часть -->
     <div class="game-wrapper">
-        <canvas id="game" width="400" height="400"></canvas>
+        <canvas id="game" ></canvas>
     </div>
 
     <!-- Правая панель -->

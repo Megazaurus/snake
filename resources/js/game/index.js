@@ -4,6 +4,7 @@ import {
     imgWall, imgGround, imgHead, imgBody, imgApple,
     portalImages, totalImages, imageState, imgExit
 } from "./canvas";
+import {draw} from "@/game/render.js";
 
 // Подсчёт загруженных изображений
 function handleImageLoad() {
@@ -11,6 +12,7 @@ function handleImageLoad() {
     if (imageState.loaded === totalImages) {
         loadLevel();
         setupControls();
+        draw();
     }
 }
 

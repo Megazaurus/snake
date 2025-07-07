@@ -1,9 +1,9 @@
-// resources/js/game/level.js
-
-import { canvas, tileSize } from "./canvas";
+import { tileSize } from "./config";
+import { canvas } from "./canvas";
 import { placeApple } from "./apple";
 import { draw } from "./render";
 import { snake, portals, currentLevelIndex } from "./state";
+import { initAppleCount } from "./appleCounter";
 
 export let map = [];
 
@@ -14,18 +14,19 @@ export function loadLevel(index = null) {
     fetch(url)
         .then(res => res.json())
         .then(data => {
+            // Загружаем карту
             map = data.level;
             currentLevelIndex.value = data.index;
 
-            canvas.width = map[0].length * tileSize;
-            canvas.height = map.length * tileSize;
-
+            // Сброс змейки
             snake.length = 0;
-            snake.push({ x: 3, y: 1 }); // только голова
-            snake.grow = 2; // <- добавить это свойство
+            snake.push({ x: 2, y: 1 }); // начальная позиция головы
+            snake.grow = 2;
 
+            // Очищаем порталы
             Object.keys(portals).forEach(key => delete portals[key]);
 
+            // Заполняем порталы заново
             for (let y = 0; y < map.length; y++) {
                 for (let x = 0; x < map[y].length; x++) {
                     const cell = map[y][x];
@@ -35,9 +36,9 @@ export function loadLevel(index = null) {
                     }
                 }
             }
-
+            initAppleCount(5);
             placeApple(map, snake);
-            draw(map, snake);
+            draw();
         });
 }
 
