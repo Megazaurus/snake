@@ -4,30 +4,35 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Models\Level;
 
-class GameController extends Controller
-{
+
+class GameController extends Controller {
     public function getLevel(Request $request)
     {
-        $levelsPath = storage_path('app/levels');
-        $files = collect(scandir($levelsPath))
-            ->filter(fn($file) => is_file($levelsPath . '/' . $file) && pathinfo($file, PATHINFO_EXTENSION) === 'php')
-            ->values()
-            ->all();
-
         $index = $request->query('index');
 
-        if (!is_numeric($index) || !isset($files[$index])) {
-            $index = array_rand($files);
+        // Отримуємо всі ID рівнів
+        $levels = Level::select('id', 'data')->orderBy('id')->get();
+
+        if ($levels->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Немає доступних рівнів',
+            ], 404);
         }
 
-        $file = $levelsPath . '/' . $files[$index];
+        if (!is_numeric($index) || !isset($levels[$index])) {
+            $index = rand(0, $levels->count() - 1);
+        }
 
-        $level = include $file;
+        $level = $levels[$index];
 
         return response()->json([
-            'level' => $level,
-            'index' => (int)$index,
+            'level' => $level->data,
+            'index' => $index,
+            'success' => true,
+            'data_img' => $level->data_img,
         ]);
     }
 }

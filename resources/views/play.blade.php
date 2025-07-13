@@ -33,12 +33,12 @@
         <div class="panel">
             <div>📜 ПРАВИЛА</div>
             <p style="font-size: 8px; line-height: 1.5;">
-    Собирай яблоки и избегай стен. Достигни портала, чтобы перейти на следующий уровень!
+    Знайди всі яблука. Не зажени себе в глухий кут. І хай буде з тобою сила.
             </p>
             <div class="button" onclick="location.reload()">🔄 Начать заново</div>
 
             <div class="controls">
-                <p style="margin-top: 10px;">🕹️ Управление:</p>
+                <p style="margin-top: 10px;">🕹️ Керування:</p>
                 <img src="{{ asset('/img/arrow-up.png') }}" alt="Up" />
                 <img src="{{ asset('/img/arrow-down.png') }}" alt="Down" />
                 <img src="{{ asset('/img/arrow-left.png') }}" alt="Left" />

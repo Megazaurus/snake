@@ -3,6 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\LevelController;
+
+Route::post('/save-level', [LevelController::class, 'store']);
 
 Route::get('/get-level', [GameController::class, 'getLevel']);
 

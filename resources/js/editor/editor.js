@@ -7,11 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let tileSize = 32; // будем пересчитывать динамически
     let tiles = [];
 
-    const tileTypes = [" ", "#", "E", "S", "P1", "P2", "P3"];
-    let currentTile = " ";
+    const tileTypes = ["@", "#", "E", "S", "P1", "P2", "P3"];
+    let currentTile = "@";
 
     const tileImages = {
-        " ": new Image(),
+        "@": new Image(),
         "#": new Image(),
         "E": new Image(),
         "S": new Image(),
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "P3": new Image(),
     };
 
-    tileImages[" "].src = "/img/grass.png";
+    tileImages["@"].src = "/img/grass.png";
     tileImages["#"].src = "/img/wall.png";
     tileImages["E"].src = "/img/exit.png";
     tileImages["S"].src = "/img/start.png";
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let y = 0; y < height; y++) {
             tiles[y] = [];
             for (let x = 0; x < width; x++) {
-                tiles[y][x] = " ";
+                tiles[y][x] = "@";
             }
         }
 
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById("clear-btn").addEventListener("click", () => {
         for (let y = 0; y < height; y++) {
             for (let x = 0; x < width; x++) {
-                tiles[y][x] = " ";
+                tiles[y][x] = "@";
             }
         }
         drawGrid();
@@ -144,4 +144,45 @@ document.addEventListener('DOMContentLoaded', () => {
         a.click();
         URL.revokeObjectURL(url);
     });
+    document.getElementById("save-db-btn").addEventListener("click", () => {
+        const name = document.getElementById("level-name").value.trim();
+
+        if (!name) {
+            alert("Введи назву рівня!");
+            return;
+        }
+        console.log(tiles);
+
+        axios.post('/save-level',{name, data: tiles})
+            .then(res => res.data.success
+                ? alert("Рівень збережено! ID: " + res.data.id)
+                : alert("Помилка збереження")
+            )
+            .catch(err => alert("Помилка підключення" ));
+
+        // fetch('/save-level', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+        //     },
+        //     body: JSON.stringify({
+        //         name,
+        //         data: tiles,
+        //     })
+        // })
+        //     .then(res => res.json())
+        //     .then(data => {
+        //         if (data.success) {
+        //             alert("Рівень збережено! ID: " + data.id);
+        //         } else {
+        //             alert("Помилка збереження");
+        //         }
+        //     })
+        //     .catch(err => {
+        //         console.error(err);
+        //         alert("Помилка підключення");
+        //     });
+    });
+
 });

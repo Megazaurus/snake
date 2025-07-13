@@ -34,6 +34,7 @@ RUN apt-get update && apt-get install -y \
 # Install Node
 RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION} | bash -
 RUN apt-get install -y nodejs
+RUN apt-get install -y npm
 RUN apt-get install -y lsof
 
 # Clear cache
@@ -59,8 +60,10 @@ RUN rm -Rf /var/www/* && \
     mkdir -p /var/www/html
 
 ADD dockerfiles/php/php.ini /usr/local/etc/php/php.ini
-
-
+#COPY dockerfiles/php/entrypoint.sh /usr/local/bin/
+#RUN chmod +x /usr/local/bin/entrypoint.sh
+#RUN ln -s /usr/local/bin/entrypoint.sh /
+#ENTRYPOINT ["entrypoint.sh"]
 
 
 RUN usermod -u ${HOST_UID} www-data
@@ -70,5 +73,5 @@ RUN chmod -R 755 $WORKDIR
 RUN chown -R www-data:www-data $WORKDIR
 
 COPY . $WORKDIR
-
+#CMD [ "entrypoint" ]
 
